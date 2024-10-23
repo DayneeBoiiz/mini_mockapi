@@ -14,24 +14,25 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  # nextjs:
-  #   build:
-  #     context: ./mini_mockapi
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:postgres@db:5432/mydatabase
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./mini_mockapi:/app
-  #   networks:
-  #     - app-network
-  #   working_dir: /app
-  #   command: npm run start
+  nextjs:
+    build:
+      context: ./mini_mockapi
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - ./mini_mockapi:/app
+    networks:
+      - app-network
+    working_dir: /app
+    command: /bin/sh -c "npx prisma migrate deploy && npm run start"
 
 networks:
   app-network:
-    driver: bridgeFROM node:18
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

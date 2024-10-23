@@ -50,6 +50,12 @@ export async function DELETE(
         },
       });
 
+      await prisma.endpoint.deleteMany({
+        where: {
+          projectId: id,
+        },
+      });
+
       await prisma.project.delete({
         where: {
           id: id,
