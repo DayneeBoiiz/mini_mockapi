@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:14
+    restart: always
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydatabase
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  # nextjs:
+  #   build:
+  #     context: ./mini_mockapi
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:postgres@db:5432/mydatabase
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./mini_mockapi:/app
+  #   networks:
+  #     - app-network
+  #   working_dir: /app
+  #   command: npm run start
+
+networks:
+  app-network:
+    driver: bridgeFROM node:18
