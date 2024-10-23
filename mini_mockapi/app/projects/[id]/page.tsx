@@ -19,7 +19,6 @@ import ConfirmDeleteModal from "@/components/ConfirmDelete";
 import { useRouter } from "next/navigation";
 import EditProjectForm from "@/components/EditProjectForm";
 import toast from "react-hot-toast";
-import { APIData } from "@prisma/client";
 
 const ProjectDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,11 +97,10 @@ const ProjectDetail = () => {
     }
   };
 
-  const setData = (mockData: APIData) => {
-    if (Array.isArray(mockData)) {
-      const dataObject = mockData[0].data;
-      setEndpointData(dataObject);
-    }
+  const setData = async (endpointId: number) => {
+    const response = await axios.get("/api/resource/" + endpointId);
+
+    setEndpointData(response.data.data);
   };
 
   return (
@@ -172,7 +170,7 @@ const ProjectDetail = () => {
               <div className="flex justify-end space-x-4 mt-4">
                 <button
                   onClick={() => {
-                    setData(endpoint.mockData);
+                    setData(endpoint.id);
                     setIsDataModalOpen(true);
                   }}
                   className="bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400"

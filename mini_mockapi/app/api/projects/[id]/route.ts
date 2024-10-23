@@ -41,7 +41,7 @@ export async function DELETE(
   try {
     const { id } = params;
 
-    await prisma.$transaction(async (prisma) => {
+    await prisma.$transaction(async (prisma: any) => {
       await prisma.aPIData.deleteMany({
         where: {
           endpoint: {
