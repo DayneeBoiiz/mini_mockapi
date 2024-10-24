@@ -22,8 +22,6 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    volumes:
-      - ./mini_mockapi:/app
     networks:
       - app-network
     working_dir: /app
